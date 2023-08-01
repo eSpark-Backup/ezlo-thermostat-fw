@@ -33,6 +33,17 @@ void thermostat_control_relay(uint8_t relay_addr, relay_state_t state)
     gpio_set_level(RELAYADDR2, relay.addr2);
 }
 
+bool thermostat_get_relay_status(uint8_t relay_addr)
+{
+    relay_addr_t relay;
+    memcpy(&relay, &relay_addr, sizeof(relay));
+    /* Set the GPIO level according to the state (LOW or HIGH)*/
+    gpio_set_level(RELAYADDR0, relay.addr0);
+    gpio_set_level(RELAYADDR1, relay.addr1);
+    gpio_set_level(RELAYADDR2, relay.addr2);
+    return gpio_get_level(RELAYSTATUS);
+}
+
 esp_err_t thermostat_setup(void)
 {
     thermostat_relays_setup();
