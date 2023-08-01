@@ -20,8 +20,8 @@ typedef struct relay_addr
 
 typedef enum relay_state
 {  
-    ENABLE, // GND enables the relay set
-    DISABLE 
+    DISABLE,
+    ENABLE
 } relay_state_t;
 
 esp_err_t thermostat_setup(void);
