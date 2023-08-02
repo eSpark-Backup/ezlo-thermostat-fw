@@ -1,4 +1,6 @@
 #include "thermostat.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 static void thermostat_relays_setup(void)
 {
@@ -31,16 +33,21 @@ void thermostat_control_relay(uint8_t relay_addr, relay_state_t state)
     gpio_set_level(RELAYADDR0, relay.addr0);
     gpio_set_level(RELAYADDR1, relay.addr1);
     gpio_set_level(RELAYADDR2, relay.addr2);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
 }
 
 bool thermostat_get_relay_status(uint8_t relay_addr)
 {
     relay_addr_t relay;
     memcpy(&relay, &relay_addr, sizeof(relay));
+    gpio_set_level(RELAYSET, 1);
+    gpio_set_level(RELAYRESET, 1);
     /* Set the GPIO level according to the state (LOW or HIGH)*/
     gpio_set_level(RELAYADDR0, relay.addr0);
     gpio_set_level(RELAYADDR1, relay.addr1);
     gpio_set_level(RELAYADDR2, relay.addr2);
+    vTaskDelay(300 / portTICK_PERIOD_MS);
+
     return gpio_get_level(RELAYSTATUS);
 }
 
