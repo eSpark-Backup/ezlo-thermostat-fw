@@ -148,14 +148,13 @@ typedef struct {
 
 static const led_params_t led_params[] = {
     [LED_STRIP_WS2812]  = { .t0h = 400, .t0l = 1000, .t1h = 1000, .t1l = 400, .order = ORDER_GRB, .adapter = ws2812_rmt_adapter },
-    [LED_STRIP_SK6812]  = { .t0h = 300, .t0l = 900,  .t1h = 600,  .t1l = 600, .order = ORDER_GRB, .adapter = sk6812_rmt_adapter },
+    [LED_STRIP_SK6812]  = { .t0h = 350, .t0l = 950,  .t1h = 950,  .t1l = 350, .order = ORDER_GRB, .adapter = sk6812_rmt_adapter },
     [LED_STRIP_APA106]  = { .t0h = 350, .t0l = 1360, .t1h = 1360, .t1l = 350, .order = ORDER_RGB, .adapter = apa106_rmt_adapter },
     [LED_STRIP_SM16703] = { .t0h = 300, .t0l = 900,  .t1h = 1360, .t1l = 350, .order = ORDER_RGB, .adapter = sm16703_rmt_adapter },
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#define APB_CLK_FREQ 160 * 1000000
 void led_strip_install()
 {
     float ratio = (float)APB_CLK_FREQ / LED_STRIP_RMT_CLK_DIV / 1e09f;
@@ -172,7 +171,7 @@ void led_strip_install()
         rmt_items[i].bit1.level0 = 1;
         rmt_items[i].bit1.duration1 = (uint32_t)(ratio * led_params[i].t1l);
         rmt_items[i].bit1.level1 = 0;
-    }
+    }   
 }
 
 esp_err_t led_strip_init(led_strip_t *strip)
@@ -275,9 +274,7 @@ esp_err_t led_strip_fill(led_strip_t *strip, size_t start, size_t len, rgb_t col
     return ESP_OK;
 }
 
-esp_err_t led_strip_set_brightness(led_strip_t *strip, uint8_t brightness)
+void led_strip_set_brightness(led_strip_t *strip, uint8_t brightness)
 {
     strip->brightness = brightness;
-    return ESP_OK;
 }
-

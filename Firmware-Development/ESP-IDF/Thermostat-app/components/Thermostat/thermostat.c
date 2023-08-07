@@ -82,4 +82,10 @@ void thermostat_test(void)
         printf("Disable : Relay No : %d Status after : %d\n", relay_no, thermostat_get_relay_status(relay_no));
         
     } 
+    printf("All Relay Status 0 to 6 : ");
+    for (size_t relay_no = 0; relay_no < 7; relay_no++)
+    {
+        printf("| %d ", thermostat_get_relay_status(relay_no));
+    }
+    printf("\n");
 }
